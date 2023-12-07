@@ -1,0 +1,36 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="container my-5">
+      {% if user.is_authenticated and user.profile.is_job == True %}
+          <div style="float: right;">
+              <a href="/add_jobs"><button class="btn btn-grey">Add Jobs</button></a>
+          </div>
+      {% endif %}
+  <table class="table table-striped">
+      <thead>
+          <tr>
+            <th scope="col">S No.</th>
+            <th scope="col">Job Title</th>
+            <th scope="col">Company</th>
+            <th scope="col">View</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in jobprofile %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{i}}</td>
+            <td>{{i.company}}</td>
+            <td><a href ="/job-details/{{i.job_slug}}" ><button class="btn btn-primary">View</button></a></td>
+            <td><a href ="/edit-job/{{i.job_id}}" ><button class="btn btn-primary">Edit</button></a></td>
+            <td><a href ="/delete-job/{{i.job_id}}" ><button type="button" class="btn btn-primary" >Delete</button></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

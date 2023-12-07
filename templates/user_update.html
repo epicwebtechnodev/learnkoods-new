@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+{% for msg in messages %}
+<script>
+    alert("{{ msg|escapejs }}");
+</script>
+{% endfor %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+
+
+<section class="container-fluid px-0">
+
+    <div class="row">
+        {% comment %} <div class="tab col-md-4">
+            <button class="tablinks" onclick="openCity(event, 'Profile')" id="defaultOpen">Profile</button>
+            <button class="tablinks" onclick="openCity(event, 'Registration')">Registration</button>
+            <button class="tablinks" onclick="openCity(event, 'Settings')">Settings</button>
+        </div> {% endcomment %}
+        <div class="tab">
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a href="" class="lsidebar">Profile</a>
+                </li>
+                <li class="nav-item">
+                   <a href="" class="lsidebar">Registration</a>
+                </li>
+                <li class="nav-item">
+                   <a href="" class="lsidebar">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user-jb-crs" class="lsidebar">Job-Course</i></button></a>
+                 </li>
+                <li class="nav-item">
+                   <a href="/update-profile/{{user.username}}/" class="lsidebar">Edit Profile <i class="bi bi-pencil-square"></i></button></a>
+                </li>
+              </ul>
+            
+        </div>
+
+        <div id="Profile" class="tabcontent">
+
+            <div class="row pt-4">
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                                <h6 class="text-primary text-uppercase mb-2">Tranding Jobs</h6>
+                                <h1 class="display-6 mb-4">Find a Jobs That Make's Your Future</h1>
+                            </div>
+                            <div class="row">
+                                {% for n in data %}
+
+                                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                                    <div class="courses-item d-flex flex-column bg-light overflow-hidden h-100">
+                                        <div class="text-center p-4 pt-0">
+                                            <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4"></div>
+                                            <h4 class="mb-3">{{n.job_title}}</h4>
+                                            <h5 class="mb-3"><i class="bi bi-building text-primary me-2"></i>{{n.company}}</h5>
+                                            <!-- <p class="mb-3">{{n.max_salary}}</p> -->
+                                            <p class="mb-3">{{n.timestamp.day}} days ago</p>
+                                        </div>
+                                    
+                                        <div class="position-relative mt-auto">
+                                            
+                                            {% if n.job_image != NULL %}
+
+                                            <img class="img-fluid-new" src="/media/{{n.job_image}}" alt="" />
+                                            <div class="courses-overlay">
+                                                <a class="btn btn-outline-primary border-2"
+                                                    href="/job-details/{{n.job_slug}}">Apply</a>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+                                <h6 class="text-primary text-uppercase mb-2">Tranding Courses</h6>
+                                <h1 class="display-6 mb-4">Our Courses Upskill You With Driving Training</h1>
+                            </div>
+                            <div class="row">
+                                {% for n in course %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="courses-item d-flex flex-column bg-light overflow-hidden h-100">
+                        <div class="text-center p-4 pt-0">
+                            <div class="d-inline-block bg-primary text-white fs-5 py-1 px-4 mb-4">${{n.course_price}}
+                            </div>
+                            <h5 class="mb-3"><i class="bi bi-building text-primary me-2"></i>{{n.course_title}}</h5>
+                            {% if n.skills|length > 150 %}
+                            <p class="mb-3">{{n.skills|slice:":150"}}<span id="dots">...</span></p>
+                            {% else %}
+                            <p class="mb-3">{{n.skills|slice:":150"}}</p>
+                            {% endif %}
+
+                            <p class="mb-3">{{n.course_level}}</p>
+                        </div>
+                        <div class="position-relative mt-auto">
+                            <img class="img-fluid-new" src="/media/course/courses-1.jpg" alt="" />
+                            <div class="courses-overlay">
+                                <a class="btn btn-outline-primary border-2"
+                                    href="/course-details/{{n.course_slug}}">Apply</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pt-4">
+
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <canvas id="myChart1" style="width:100%;max-width:625px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <canvas id="myChart2" style="width:100%;max-width:625px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+        </div>
+
+        {% comment %} <div id="Registration" class="tabcontent">
+            <h3 class="pt-4">Registration</h3>
+
+        </div>
+
+        <div id="Settings" class="tabcontent">
+            <h3 class="pt-4">Settings</h3>
+
+        </div> {% endcomment %}
+    </div>
+  
+  </section>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/js/drag.js"></script>
+  <script src="/static/js/script1.js"></script>
+  <script>
+    // Show the first modal when the page loads
+    $(document).ready(function () {
+      $('#modal1').modal('show');
+    });
+  
+    $('#modal1SubmitButton').click(function () {
+      // Submit the form
+      $('#myForm').submit();
+    });
+    
+    $("#search").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $(".skills-label").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+  </script>
+
+{% endif %}
+
+{% endblock %}

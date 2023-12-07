@@ -1,0 +1,412 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+{% for msg in messages %}
+<script>
+    alert("{{ msg|escapejs }}");
+</script>
+{% endfor %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+
+
+<section class="container-fluid px-0">
+
+    <div class="row">
+        {% comment %} <div class="tab col-md-4">
+            <button class="tablinks" onclick="openCity(event, 'Profile')" id="defaultOpen">Profile</button>
+            <button class="tablinks" onclick="openCity(event, 'Registration')">Registration</button>
+            <button class="tablinks" onclick="openCity(event, 'Settings')">Settings</button>
+        </div> {% endcomment %}
+        <div class="tab">
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a href="" class="lsidebar">Profile</a>
+                </li>
+                <li class="nav-item">
+                   <a href="" class="lsidebar">Registration</a>
+                </li>
+                <li class="nav-item">
+                   <a href="" class="lsidebar">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/user-jb-crs" class="lsidebar">Job-Course</button></a>
+                 </li>
+                <li class="nav-item">
+                   <a href="/update-profile/{{user.username}}/" class="lsidebar">Edit Profile <i class="bi bi-pencil-square"></i></button></a>
+                </li>
+              </ul>
+            
+        </div>
+
+        <div id="Profile" class="tabcontent">
+
+            <div class="row pt-4">
+
+                <div class="col-md-6">
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-8">
+
+                                        <img src="/media/{{user.profile.profile_image}}" alt="avatar"
+                                            class="rounded-circle img-fluid"
+                                            style="width: 140px; object-fit: contain; height: 140px;" />
+                                        <p class="text-muted px-3 mb-0">{{user.username}}</p>
+
+                                    </div>
+                                    {% comment %} <div class="col-sm-4">
+                                            <a href="/update_profile/{{user.id}}/"><button class="btn btn-primary edit">Edit Profile <i
+                                                    class="bi bi-pencil-square"></i></button></a>
+                                    </div> {% endcomment %}
+                                    {% comment %} <div class="col-sm-4">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                        Launch demo modal
+                                    </button>
+                                </div> {% endcomment %}
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0 fsizep"><a href="/media/{{user.profile.resume}}"
+                                                target="_blank"><i
+                                                    class="bi bi-file-earmark-text-fill text-primary"></i> View
+                                                Resume</a></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Full Name</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.first_name}} {{user.last_name}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Email</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.email}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Phone</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.profile.phone}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Gender</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.profile.gender}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Institution/Organization</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <p class="text-muted mb-0">{{user.profile.institution}}</p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <p class="mb-0">Resume Data</p>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <textarea class="text-muted mb-0">{{user.profile.resume_data}}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="mb-0">Skills</p>
+                                    </div>
+                                    <div class="col-md-12 p-3">
+                                        {% for i in skill %}
+                                        <div class="mb-0 skills">{{i}}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="mb-0">About</p>
+                                    </div>
+                                    <div class="col-md-12 p-3">
+                                        <p class="text-muted mb-0">{{user.profile.profile_desc}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="mb-0">Work At</p>
+                                    </div>
+                                    <div class="col-md-12 p-3">
+                                        <p class="text-muted mb-0">{{user.profile.work_at}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="mb-0">Position</p>
+                                    </div>
+                                    <div class="col-md-12 p-3">
+                                        <p class="text-muted mb-0">{{user.profile.position}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <canvas id="myChart1" style="width:100%;max-width:625px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <canvas id="myChart2" style="width:100%;max-width:625px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% comment %} <div id="Registration" class="tabcontent">
+            <h3 class="pt-4">Registration</h3>
+
+        </div>
+
+        <div id="Settings" class="tabcontent">
+            <h3 class="pt-4">Settings</h3>
+
+        </div> {% endcomment %}
+    </div>
+
+<!-- Modal -->
+
+{% comment %} {% if pro == None %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Industry</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+            </div>
+            <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-outline mb-4">
+                <input type="text" name="industry" id="industry" class="form-control form-control-lg" required />
+                <label class="form-label" for="otp">Work At</label>
+        
+                <div class="form-outline mb-4">
+                <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
+                    <option value="">Select Position</option>
+                    {% for i in inds %}
+                    <option value="{{i.id}}" required>{{i.name}}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-success btn-block" >Submit</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+{% endif %} {% endcomment %}
+
+
+
+
+{% if prof == None %}
+
+<!-- First Modal -->
+<div class="modal fade" id="modal1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Work Position</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="myForm" method="POST" action="{% url 'profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-outline mb-4">
+                        <input type="text" name="industry" id="industry" class="form-control form-control-lg" required />
+                        <label class="form-label" for="industry">Work At</label>
+                    </div>
+                    <div class="form-outline mb-4">
+                        <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
+                            <option value="1">Select Position</option>
+                            {% for i in inds %}
+                            <option value="{{i.id}}">{{i.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                        
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary edit" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal2">Next <i class="bi bi-arrow-right-short"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second Modal -->
+
+<div class="modal fade" id="modal2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Upload Your Current Resume</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <div class="form-outline mb-4">
+                    <center>
+                    <div class="drop-zone">
+                        <span class="drop-zone__prompt">Drop Resume here or click to upload</span>
+                        <input type="file" name="resume" id="resume" value="{{pro.resume}}" class="drop-zone__input" />
+                      </div>
+                    </center>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal1"><i class="bi bi-arrow-left-short"></i> Previous</button>
+                <button type="button" class="btn btn-primary edit" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal3">Next <i class="bi bi-arrow-right-short"></i></button>
+            </div>
+       
+        </div>
+    </div>
+</div>
+
+<!-- Third Modal -->
+
+<div class="modal fade" id="modal3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Your Skills</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-outline abcdef mb-4">
+                    <input type="text" id="search" placeholder="Search"><br/>
+                        {% for i in sk %}
+                        <label class="skills-label">
+                        <input type="checkbox" name="skills" value="{{i.data}}">
+                        {{i.data}}</label>
+                        {% endfor %}
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal2"><i class="bi bi-arrow-left-short"></i> Previous</button>
+                <button type="submit" class="btn btn-primary edit" data-bs-dismiss="modal" id="modal1SubmitButton">submit</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+  {% endif %}
+  
+  </section>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/js/drag.js"></script>
+  <script src="/static/js/script1.js"></script>
+  <script>
+    // Show the first modal when the page loads
+    $(document).ready(function () {
+      $('#modal1').modal('show');
+    });
+  
+    $('#modal1SubmitButton').click(function () {
+      // Submit the form
+      $('#myForm').submit();
+    });
+    
+    $("#search").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $(".skills-label").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
+    });
+  </script>
+
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+{% for msg in messages %}
+<script>
+    alert("{{ msg|escapejs }}");
+</script>
+{% endfor %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
+<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/js/select2.min.js"></script>
+<section class="container-fluid px-0">
+
+    <div class="row">
+        <div class="tab">
+            {% comment %} <button class="tablinks" onclick="openCity(event, 'Profile')" id="defaultOpen">Profile</button>
+            <button class="tablinks" onclick="openCity(event, 'Registrations')">Registrations</button>
+            <button class="tablinks" onclick="openCity(event, 'Settings')">Settings</button> {% endcomment %}
+
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                   <a href="" class="lsidebar">Registration</a>
+                </li>
+                <li class="nav-item">
+                   <a href="" class="lsidebar">Settings</a>
+                </li>
+                <li class="nav-item">
+                   <a href="/user-profile" class="lsidebar">Back To Profile</a>
+                </li>
+              </ul>
+
+        </div>
+
+        <div id="Profile" class="tabcontent">
+
+            <div class="row pt-4">
+                <div class="col-md-8">
+                    {% comment %} <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <a href="/user-profile/"><button class="btn btn-primary ">Back To Profile <i
+                                                class="bi bi-box-arrow-left"></i></button></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8"> {% endcomment %}
+                            <div class="card mb-4">
+                                <div class="card-body p-lg-5 text-black">
+
+                                    <form method="POST" enctype="multipart/form-data" >
+                                        {% csrf_token %}
+
+                                        <div class="row">
+
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="text" name="first_name" value="{{user.first_name}}"
+                                                id="first_name" class="form-control form-control-lg" />
+                                            <label class="form-label" for="first_name">First Name</label>
+                                        </div>
+
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="text" name="last_name" id="last_name"
+                                                value="{{user.last_name}}" class="form-control form-control-lg" />
+                                            <label class="form-label" for="last_name">Last Name</label>
+                                        </div>
+
+                                        </div>
+                                        <div class="row">
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="text" name="username" value="{{user.username}}" id="first_name"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="username">Username</label>
+                                        </div>
+
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="email" name="email" id="email" value="{{user.email}}"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="email">Email</label>
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="form-outline col-md-12 mb-4">
+                                        <textarea name="about" id="about" value="{{profile.profile_desc}}"
+                                            class="form-control form-control-lg">{{profile.profile_desc}}</textarea>
+                                        <label class="form-label" for="about">About</label>
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="container">
+                                                
+                                                <select multiple data-multi-select-plugin>
+                                                    {% for i in profile.skills.all %}           
+                                                    <option {% if profile.skills %} selected value="{{i.data}}" {% endif %} value="">{{i}}</option>        
+                                                    {% endfor %}                         
+                                                    {% for i in skill %}
+                                                    <option name="{{i.data}}" value="{{i.data}}">{{i.data}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <label class="form-label" for="skills">Skills</label>
+                                                <br>
+                                                <br>
+                                            </div>
+                                            </div>
+                                        <div class="row">
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="file" name="image" id="image"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="email">Profile Image</label>
+                                        </div>
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="file" name="resume" id="resume" value="{{profile.resume}}"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="resume">Resume</label>s
+                                        </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="form-outline col-md-6 mb-4">
+                                                <input type="text" name="work_at" id="work_at"
+                                                    class="form-control form-control-lg" value="{{profile.work_at}}" />
+                                                <label class="form-label" for="work_at">Work At</label>
+                                            </div>
+                                            <div class="form-outline col-md-6 mb-4">
+                                                <select id="someSelectElement" name="position" class="form-select" aria-label="Default select example" required>
+                                                    {% if user.profile.position %}
+                                                        <option selected value="{{user.profile.position.id}}">{{user.profile.position}}</option>
+                                                    {% else %}
+                                                        <option value="">Select Position</option>
+                                                    {% endif %}
+                                                    {% for i in inds %}
+                                                    <option value="{{i.id}}">{{i.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <label class="form-label" for="position">Select Position</label>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <div class="row">
+                                        <div class="form-outline col-md-12 mb-4">
+                                            
+                                            <input type="radio" name="gender" id="male" value="Male" required {% if user.profile.gender == "Male" %} checked {% endif %}
+                                                 />&nbsp;<label class="form-label" for="gender" >Male</label>&nbsp;
+                                             <input type="radio" name="gender" id="female" value="Female" {% if user.profile.gender == "Female" %} checked {% endif %}
+                                                 />&nbsp;<label class="form-label" for="gender">Female</label>&nbsp;
+                                            <input type="radio" name="gender" id="other" value="Other" {% if user.profile.gender == "Other" %} checked {% endif %}
+                                                />&nbsp;<label class="form-label" for="gender">Other</label>
+                                            
+                                        </div>
+                                        </div>
+                                        <div class="row">
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="tel" class="form-control form-control-lg" id="phone" value="{{num}}"
+                                                name="phone" maxlength="10" placeholder="123-45-678"
+                                                pattern="[0-9]{3}[0-9]{2}[0-9]{5}" required>
+                                            <label class="form-label" for="email">Phone Number</label>
+                                        </div>
+
+                                        <div class="form-outline col-md-6 mb-4">
+                                            <input type="text" name="inst" id="inst" value="{{profile.institution}}"
+                                                class="form-control form-control-lg" />
+                                            <label class="form-label" for="inst">Institute/Organisation</label>
+                                        </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-success btn-block">Update</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        {% comment %} <div id="Registrations" class="tabcontent">
+            <h3 class="pt-4">Registrations</h3>
+
+        </div>
+
+        <div id="Settings" class="tabcontent">
+            <h3 class="pt-4">Settings</h3>
+
+        </div> {% endcomment %}
+    </div>
+</section>
+
+<script src="/static/js/new.js"></script>
+
+
+{% else %}
+
+<div class="m-5">
+    <center>
+        <h2>No Profile Yet</h2>
+        <a href="/sign-up"><button class="btn px-5 btn-primary btn-lg btn-block" type="submit">Sign Up</button></a>
+    </center>
+</div>
+
+{% endif %}
+
+
+{% endblock %}
